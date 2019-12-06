@@ -1,0 +1,36 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+    var currentDt = DateTime.Now;
+    var fontColor = (currentDt.Hour >= 0 && currentDt.Hour < 12 ? "White" : "#12cdea");
+}
+
+<h1>Locations</h1>
+
+<input type="text" name="name" placeholder="Type a city name" class="form-control" />
+<br />
+
+@*Result should dispaly hear*@
+<div class="card mb-3" style="max-width: 100%;">
+    <div class="row no-gutters">
+        <div class="col-md-6">
+            <div class="card-body">
+                <h5 class="card-title">City Name</h5>
+                <p class="card-text">@currentDt.ToString("dddd MMM d, yyyy HH:mm")</p>
+            </div>
+        </div>
+        <div class="col-md-4 text-right">
+            <div class="card-body">
+                <p><img src="~/images/rainy-icons.svg" alt="Alternate Text" /></p>
+            </div>
+        </div>
+        <div class="col-md-2 text-left">
+            <div class="card-body">
+                <p class="card-text">22&deg;C</p>
+                <p class="card-text">9&deg;C/18&deg;C</p>
+                <p class="card-text">Rain Expectation: 20%</p>
+            </div>
+        </div>
+    </div>
+</div>
+

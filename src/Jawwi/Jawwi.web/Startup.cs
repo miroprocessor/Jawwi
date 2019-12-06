@@ -6,11 +6,13 @@ using System.Threading.Tasks;
 using Jawwi.DB;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace Jawwi.web
 {
@@ -30,6 +32,7 @@ namespace Jawwi.web
             //services.AddDbContext<DataContext>(options => 
             //    options.UseSqlServer(config.GetConnectionString("JawwiConnection")));
             services.AddControllersWithViews();
+            services.AddHttpContextAccessor();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

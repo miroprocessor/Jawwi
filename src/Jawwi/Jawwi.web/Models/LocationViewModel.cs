@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Jawwi.web.Weather;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -18,7 +19,6 @@ namespace Jawwi.web.Models
     public class LocationsViewModel
     {
         public LocationViewModel Location{ get; set; }
-
-        public List<Dailyforecast> Dailyforecasts { get; set; }
+        public CurrentCodition Condition { get; set; }
     }
 }

@@ -45,13 +45,13 @@ namespace Jawwi.web.Controllers
                 var result = (await _api.Search(location.City)).FirstOrDefault();
                 if (result != null)
                 {
-                    var weather = await _api.Forcast5Days(result.Key);
+                    var weather = await _api.GetLocationDetails(result.Key);
                     if (weather != null)
                     {
                         model.Add(new LocationsViewModel()
                         {
                             Location = location,
-                            Dailyforecasts = weather
+                            Condition = weather
                         });
                     }
                 }
