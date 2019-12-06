@@ -20,7 +20,7 @@ namespace Jawwi.web.Weather
         }
 
         public readonly string BaseUrl = "http://dataservice.accuweather.com/";
-        public readonly string apikey = "2YLeGkoybtgA0sffvUZ8o3ufc42e6aDi";//"C4rQfwrxnBypH9NSFUMpdfyg9z28sFNV";
+        public readonly string apikey = "vEroH8arF66ENWdFghzQ9gDn5oPCx1CL";//"C4rQfwrxnBypH9NSFUMpdfyg9z28sFNV";
 
         public async Task<string> GetCountries(string regionCode)
         {
@@ -159,7 +159,7 @@ namespace Jawwi.web.Weather
 
             return currentCodition;
         }
-
+        
         public async Task<List<HourlyForecast>> GetHourlyForecast(string locationCode)
         {
             var client = new HttpClient();
@@ -169,16 +169,19 @@ namespace Jawwi.web.Weather
             var result = await client.GetAsync($"forecasts/v1/hourly/12hour/{locationCode}?apikey={apikey}");
 
             var json = (dynamic)JsonConvert.DeserializeObject(await result.Content.ReadAsStringAsync());
-
+            int i = 0;
             var hours = new List<HourlyForecast>();
             foreach (var hourly in json)
             {
                 hours.Add(new HourlyForecast()
                 {
+                    Index = i,
                     Date = hourly.DateTime,
-                    MinTemperature = hourly.Temperature.Value,
+                    Temperature = hourly.Temperature.Value,
                     WeatherIcon = hourly.WeatherIcon
                 });
+
+                i += 2;
 
             }
             return hours;

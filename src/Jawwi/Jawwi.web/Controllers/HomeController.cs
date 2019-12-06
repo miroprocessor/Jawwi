@@ -32,6 +32,7 @@ namespace Jawwi.web.Controllers
             var model = new IndexVM();
             model.Location =  await _api.GetCurrentLocationDetails();
             model.Dailyforecast = await _api.Forcast5Days(model.Location.Key);
+            model.HourlyForecast = await _api.GetHourlyForecast(model.Location.Key);
 
             return View(model);
         }
