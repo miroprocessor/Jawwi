@@ -7,20 +7,18 @@ namespace Jawwi.web.Controllers
 {
     public class TestController : Controller
     {
-        private readonly IHttpContextAccessor _accessor;
+        private readonly Api _api;
 
-        public TestController(IHttpContextAccessor accessor)
+        public TestController(Api api)
         {
-            _accessor = accessor;
+            _api = api;
         }
 
         public async Task<Location> Index()
         {
 
-            var weatherApi = new Api(_accessor.HttpContext);
-            //return await weatherApi.GetCountries("MEA");
             
-            return await weatherApi.GetCurrentLocationDetails();
+            return await _api.GetCurrentLocationDetails();
         }
     }
 }

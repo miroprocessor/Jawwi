@@ -13,9 +13,9 @@ namespace Jawwi.web.Weather
     {
         private readonly HttpContext _context;
 
-        public Api(HttpContext context)
+        public Api(IHttpContextAccessor accessor)
         {
-            _context = context;
+            _context = accessor.HttpContext;
         }
 
         public readonly string BaseUrl = "http://dataservice.accuweather.com/";

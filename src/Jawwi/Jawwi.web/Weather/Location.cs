@@ -40,6 +40,10 @@
         public string WeatherText { get; set; }
         public bool IsDayTime { get; set; }
         public decimal Temperature { get; set; }
+
+        public string RelativeHumidity { get; set; }
+        public string WeatherIcon { get; set; }
+        public string Wind { get; set; }
     }
     public class Region
     {

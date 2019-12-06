@@ -17,7 +17,7 @@ namespace Jawwi.web.Controllers
         private readonly IHttpContextAccessor _accessor;
         private readonly Weather.Api _api;
 
-        public HomeController(ILogger<HomeController> logger, Weather.Api weatherApi)
+        public HomeController(ILogger<HomeController> logger, Weather.Api weatherApi, IHttpContextAccessor accessor)
         {
             _logger = logger;
             _accessor = accessor;
@@ -26,10 +26,10 @@ namespace Jawwi.web.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var weatherApi = new WeatherApi.WeatherApi(_accessor.HttpContext);
+            //var weatherApi = new Weather.Api(_accessor);
             //return await weatherApi.GetCountries("MEA");
 
-            var model =  await weatherApi.GetCurrentLocationDetails();
+            var model =  await _api.GetCurrentLocationDetails();
             return View(model);
         }
 
