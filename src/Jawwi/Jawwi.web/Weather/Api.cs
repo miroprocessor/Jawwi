@@ -155,32 +155,32 @@ namespace Jawwi.web.Weather
             return currentCodition;
         }
 
-        public async Task<string> GetHourlyForecast(string locationCode)
-        {
-            var client = new HttpClient();
+        //public async Task<List<HourlyForecast>> GetHourlyForecast(string locationCode)
+        //{
+        //    var client = new HttpClient();
 
-            client.BaseAddress = new Uri(BaseUrl);
+        //    client.BaseAddress = new Uri(BaseUrl);
 
-            var result = await client.GetAsync($"forecasts/v1/hourly/120hour/{locationCode}?apikey={apikey}");
+        //    var result = await client.GetAsync($"forecasts/v1/hourly/120hour/{locationCode}?apikey={apikey}");
 
-            var json = JsonConvert.DeserializeObject<dynamic>(await result.Content.ReadAsStringAsync());
+        //    var json = JsonConvert.DeserializeObject<dynamic>(await result.Content.ReadAsStringAsync());
 
-            var hours = new List<Dailyforecast>();
-            foreach (var dayna in json.Dailyforecast)
-            {
-                hours.Add(new Dailyforecast()
-                {
-                    Date = dayna.Date,
-                    MinTemperature = dayna.Temperature.Minimum.Value,
-                    MaxTemperature = dayna.Temperature.Maximum.Value,
-                    Day = dayna.Day,
-                    Night = dayna.Night
-                });
+        //    var hours = new List<HourlyForecast>();
+        //    foreach (var hourly in json)
+        //    {
+        //        hours.Add(new HourlyForecast()
+        //        {
+        //            Date = hourly.DateTime,
+        //            MinTemperature = hourly.Temperature.Value,
+        //            MaxTemperature = WeatherIcon,
+        //            Day = hourly.Day,
+        //            Night = hourly.Night
+        //        });
 
-            }
-            return hours;
+        //    }
+        //    return hours;
 
 
-        }
+        //}
     }
 }
