@@ -11,5 +11,6 @@ namespace Jawwi.web.ViewModel
     {
         public Weather.Location Location { get; set; }
         public List<Dailyforecast> Dailyforecast { get; set; }
+        public List<HourlyForecast> HourlyForecast { get; set; }
     }
 }

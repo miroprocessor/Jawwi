@@ -171,26 +171,29 @@ namespace Jawwi.web.Weather
 
             return currentCodition;
         }
-
+        
         public async Task<List<HourlyForecast>> GetHourlyForecast(string locationCode)
         {
             var client = new HttpClient();
 
             client.BaseAddress = new Uri(BaseUrl);
 
-            var result = await client.GetAsync($"forecasts/v1/hourly/12hour/{locationCode}?apikey={apikey}");
+            var result = await client.GetAsync($"forecasts/v1/hourly/12hour/{locationCode}?apikey={apikey}&metric=true");
 
             var json = (dynamic)JsonConvert.DeserializeObject(await result.Content.ReadAsStringAsync());
-
+            int i = 0;
             var hours = new List<HourlyForecast>();
             foreach (var hourly in json)
             {
                 hours.Add(new HourlyForecast()
                 {
+                    Index = i,
                     Date = hourly.DateTime,
-                    MinTemperature = hourly.Temperature.Value,
+                    Temperature = hourly.Temperature.Value,
                     WeatherIcon = hourly.WeatherIcon
                 });
+
+                i += 2;
 
             }
             return hours;

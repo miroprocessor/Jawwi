@@ -31,13 +31,12 @@
                 </div>
                 <h4 class="card-header">Hourly Forecast</h4>
                 <div class="future slider">
-                    @for (int i = 0; i < 24; i++)
+                    @foreach (var hourly in @Model.HourlyForecast)
                     {
                         <div class="hour slide">
-                            <h3>@(currentDt.AddHours(i + 2).ToString("HH:00"))</h3>
-                            <div class="temp">22&deg;<small>C</small></div>
-                            <div class="templowhigh">9&deg;<small>C</small>/18&deg;<small>C</small></div>
-                            <p><img src="~/images/rainy-icons.svg" alt="Alternate Text" /></p>
+                            <h3>@(currentDt.AddHours(hourly.Index + 2).ToString("HH:00"))</h3>
+                            <div class="temp">@hourly.Temperature.ToString("0") &deg;<small>C</small></div>
+                            <p><img src="~/images/icons/@hourly.WeatherIcon.ToString("00")-s.png" alt="Alternate Text" /></p>
                         </div>
                     }
                 </div>
@@ -52,17 +51,7 @@
                             <p><img src="~/images/icons/@(daily.Day.Icon.ToString("00"))-s.png" alt="Alternate Text" /></p>
                         </div>
                     }
-
-
-                    @*@for (int i = 1; i <= 7; i++)
-                        {
-                            <h3>@(currentDt.AddDays(i).ToString("ddd"))</h3>
-                            <div class="temp">@daily 22&deg; <small>C</small></div>
-                            <div class="templowhigh">9&deg;<small>C</small>/18&deg;<small>C</small></div>
-                            <p><img src="~/images/rainy-icons.svg" alt="Alternate Text" /></p>
-                        }*@
                 </div>
-
             </div>
         </div>
     </div>
