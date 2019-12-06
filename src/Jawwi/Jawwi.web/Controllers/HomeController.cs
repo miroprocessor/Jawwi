@@ -8,6 +8,7 @@ using Microsoft.Extensions.Logging;
 using Jawwi.web.Models;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
+using Jawwi.web.ViewModel;
 
 namespace Jawwi.web.Controllers
 {
@@ -28,8 +29,10 @@ namespace Jawwi.web.Controllers
         {
             //var weatherApi = new Weather.Api(_accessor);
             //return await weatherApi.GetCountries("MEA");
+            var model = new IndexVM();
+            model.Location =  await _api.GetCurrentLocationDetails();
+            model.Dailyforecast = await _api.Forcast5Days(model.Location.Key);
 
-            var model =  await _api.GetCurrentLocationDetails();
             return View(model);
         }
 

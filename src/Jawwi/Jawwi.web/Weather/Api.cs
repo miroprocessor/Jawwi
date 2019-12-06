@@ -63,10 +63,10 @@ namespace Jawwi.web.Weather
 
             var result = await client.GetAsync($"forecasts/v1/daily/5day/{locationCode}?apikey={apikey}");
 
-            var json = JsonConvert.DeserializeObject<dynamic>(await result.Content.ReadAsStringAsync());
+            var json = (dynamic)JsonConvert.DeserializeObject(await result.Content.ReadAsStringAsync());
 
             var days = new List<Dailyforecast>();
-            foreach (var dayna in json.Dailyforecast)
+            foreach (var dayna in json.DailyForecasts)
             {
                 days.Add(new Dailyforecast()
                 {
@@ -176,7 +176,7 @@ namespace Jawwi.web.Weather
         //            Day = hourly.Day,
         //            Night = hourly.Night
         //        });
-
+        
         //    }
         //    return hours;
 
