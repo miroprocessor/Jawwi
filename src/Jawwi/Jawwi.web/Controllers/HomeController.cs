@@ -44,37 +44,39 @@ namespace Jawwi.web.Controllers
 
         public async Task<IActionResult> Locations()
         {
-            var locations = new List<LocationViewModel>();
-            if (Request.Cookies.ContainsKey("locations"))
-            {
-                locations = JsonConvert.DeserializeObject<List<LocationViewModel>>(Request.Cookies["locations"]);
-            }
-            if (locations.Count > 0)
-            {
-                var model = new List<LocationsViewModel>();
-                foreach (var location in locations)
-                {
-                    var item = new LocationsViewModel()
-                    {
-                        Location = location
-                    };
-                    var result = (await _api.Search(location.City)).FirstOrDefault();
-                    if (result != null)
-                    {
-                        var weather = await _api.GetCurrentCondition(result.Key);
-                        if (weather != null)
-                        {
-                            item.Condition = weather;
-                        }
-                    }
-                    model.Add(item);
-                }
-                return View(model);
-            }
-            else
-            {
-                return View(new List<LocationsViewModel>());
-            }
+            //var locations = new List<LocationViewModel>();
+            //if (Request.Cookies.ContainsKey("locations"))
+            //{
+            //    locations = JsonConvert.DeserializeObject<List<LocationViewModel>>(Request.Cookies["locations"]);
+            //}
+            //if (locations.Count > 0)
+            //{
+            //    var model = new List<LocationsViewModel>();
+            //    foreach (var location in locations)
+            //    {
+            //        var item = new LocationsViewModel()
+            //        {
+            //            Location = location
+            //        };
+            //        var result = (await _api.Search(location.City)).FirstOrDefault();
+            //        if (result != null)
+            //        {
+            //            var weather = await _api.GetCurrentCondition(result.Key);
+            //            if (weather != null)
+            //            {
+            //                item.Condition = weather;
+            //            }
+            //        }
+            //        model.Add(item);
+            //    }
+            //    return View(model);
+            //}
+            //else
+            //{
+            //    return View(new List<LocationsViewModel>());
+            //}
+
+            return View(new List<LocationsViewModel>());
 
         }
 

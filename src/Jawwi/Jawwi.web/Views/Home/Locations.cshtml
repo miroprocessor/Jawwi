@@ -13,9 +13,6 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Location.City)
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model.Location.CountryName)
             </th>
             <th>
@@ -46,9 +43,6 @@
         {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Location.City)
-            </td>
-            <td>
                 @Html.DisplayFor(modelItem => item.Location.CountryName)
             </td>
             <td>
@@ -70,7 +64,7 @@
                 @Html.DisplayFor(modelItem => item.Condition.Temperature)
             </td>
             <td>
-                <img src="@Url.Content($"~/wwwroot/images/icons/{item.Condition.WeatherIcon}-s.png")" style="width:50px;" />
+                <img src="@Url.Content($"~/wwwroot/images/icons/{item.Condition?.WeatherIcon}-s.png")" style="width:50px;" />
                 
             </td>
         </tr>

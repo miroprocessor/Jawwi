@@ -22,13 +22,13 @@ namespace Jawwi.web.Weather
         public readonly string BaseUrl = "http://dataservice.accuweather.com/";
         public readonly string apikey = "ju8lA0Heax0Q1lAol0AoVo97x8Aw2Pcb";//"C4rQfwrxnBypH9NSFUMpdfyg9z28sFNV";
 
-        public async Task<IEnumerable<Country>> GetCountries(string regionCode)
+        public async Task<IEnumerable<Country>> GetCountries(string query)
         {
             var client = new HttpClient();
 
             client.BaseAddress = new Uri(BaseUrl);
 
-            var result = await client.GetAsync($"locations/v1/countries/{regionCode}?apikey={apikey}");
+            var result = await client.GetAsync($"locations/v1/cities/autocomplete?apikey={apikey}&q={query}");
             var countries = new List<Country>();
             if (result.StatusCode == System.Net.HttpStatusCode.OK)
             {
@@ -38,8 +38,8 @@ namespace Jawwi.web.Weather
                 {
                     countries.Add(new Country()
                     {
-                        Code = item.ID,
-                        Name = item.EnglishName
+                        Code = item.Country.ID,
+                        Name = item.Country.LocalizedName
                     });
                 }
             }

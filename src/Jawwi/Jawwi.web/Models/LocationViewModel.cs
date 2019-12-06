@@ -13,8 +13,6 @@ namespace Jawwi.web.Models
         public string CountryCode { get; set; }
 
         public string RegionCode { get; set; }
-
-        public string City { get; set; }
     }
     public class LocationsViewModel
     {
