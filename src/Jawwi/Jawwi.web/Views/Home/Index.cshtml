@@ -6,7 +6,7 @@
 
 @{
     var currentDt = DateTime.Now;
-    var fontColor = (currentDt.Hour >= 0 && currentDt.Hour < 12 ? "White" : "#12cdea");
+    var fontColor = (Model.IsDayTime ? "#999aff" : "#0203a1");
 }
 
 <div class="container">
