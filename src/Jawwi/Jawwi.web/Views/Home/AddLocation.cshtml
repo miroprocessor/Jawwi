@@ -30,7 +30,8 @@
             </div>
             <div class="form-group">
                 <label asp-for="CountryCode" class="control-label"></label>
-                <input asp-for="CountryCode" class="form-control" />
+                <select asp-for="CountryCode" class="form-control">
+                </select>
                 <span asp-validation-for="CountryCode" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -56,4 +57,27 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script>
+        $(document).ready(function () {
+            loadCountries();
+        })
+    function loadCountries() {
+        $.ajax({
+            url: '@Url.Content("~/countries/?region=")' + $('#RegionCode').val(),
+            type: 'GET',
+            dataType: 'Json',
+            success: function (e) {
+                $('#CountryCode').html('');
+                for (var x = 0; x < e.length - 1;x++) {
+                        $('#CountryCode').append('<option value="' + e[x].code + '">' + e[x].name + '</option>');
+    }
+},
+
+            error: function () {
+                alert('Error!!!.');
+            }
+        })
+    }
+    </script>
 }
