@@ -19,7 +19,7 @@ namespace Jawwi.web.Weather
         }
 
         public readonly string BaseUrl = "http://dataservice.accuweather.com/";
-        public readonly string apikey = "Bl3XjUzA1w7VraOff37cEfixuOoRPQnZ";//"C4rQfwrxnBypH9NSFUMpdfyg9z28sFNV";
+        public readonly string apikey = "2YLeGkoybtgA0sffvUZ8o3ufc42e6aDi";//"C4rQfwrxnBypH9NSFUMpdfyg9z28sFNV";
 
         public async Task<string> GetCountries(string regionCode)
         {
@@ -85,16 +85,27 @@ namespace Jawwi.web.Weather
         /// get location
         /// </summary>
         /// <returns></returns>
-        public async Task<List<Location>> Search(string query)
+        public async Task<List<LocationResult>> Search(string query)
         {
             var client = new HttpClient();
 
             client.BaseAddress = new Uri(BaseUrl);
 
-            var result = await client.GetAsync($"locations/v1/cities/search/?apikey={apikey}&q={query}&offset=25");
+            var result = await client.GetAsync($"locations/v1/cities/search?apikey={apikey}&q={query}&offset=25");
+            var locations = new List<LocationResult>();
+            if (result.StatusCode == System.Net.HttpStatusCode.OK)
+            {
+                var json = (dynamic)JsonConvert.DeserializeObject(await result.Content.ReadAsStringAsync());
 
-            return JsonConvert.DeserializeObject<List<Location>>(await result.Content.ReadAsStringAsync());
-            //return (await result.Content.ReadAsStringAsync());
+                foreach (var item in json)
+                {
+                    locations.Add(new LocationResult()
+                    {
+                        Key = item.Key
+                    });
+                }
+            }
+            return locations;
         }
 
 
@@ -108,7 +119,7 @@ namespace Jawwi.web.Weather
 
             var result = await client.GetAsync($"locations/v1/cities/ipaddress?apikey={apikey}&q={ip}&lang=en-us&details=false");
             var stringResult = await result.Content.ReadAsStringAsync();
-            var json= (dynamic)JsonConvert.DeserializeObject(stringResult);
+            var json = (dynamic)JsonConvert.DeserializeObject(stringResult);
 
             var location = new Location()
             {
@@ -132,26 +143,33 @@ namespace Jawwi.web.Weather
             return location;
         }
 
-        public async Task<CurrentCodition> GetLocationDetails(string locationKey)
+        public async Task<CurrentCodition> GetCurrentCondition(string locationKey)
         {
             var client = new HttpClient();
 
             client.BaseAddress = new Uri(BaseUrl);
-            var ip = "37.37.166.79";
-            //var ip = _context.Connection.RemoteIpAddress.ToString();
-
             var result = await client.GetAsync($"currentconditions/v1/{locationKey}?apikey={apikey}");
-            var stringResult = await result.Content.ReadAsStringAsync();
-            var json = (dynamic)JsonConvert.DeserializeObject(stringResult);
-
-            var currentCodition = new CurrentCodition()
+            var currentCodition = new CurrentCodition();
+            if (result.StatusCode == System.Net.HttpStatusCode.OK)
             {
-                WeatherText = json.WeatherText,
-                WeatherIcon = json.WeatherIcon,
-                HasPrecipitation = json.HasPrecipitation,
-                IsDayTime = json.IsDayTime,
-                Temperature = json.Temperature.Metric.Value
-            };
+                var stringResult = await result.Content.ReadAsStringAsync();
+                var json = (dynamic)JsonConvert.DeserializeObject(stringResult);
+
+                foreach (var item in json)
+                {
+                    currentCodition = new CurrentCodition()
+                    {
+                        WeatherText = item.WeatherText,
+                        WeatherIcon = item.WeatherIcon,
+                        HasPrecipitation = item.HasPrecipitation,
+                        IsDayTime = item.IsDayTime,
+                        Temperature = item.Temperature.Metric.Value
+                    };
+                    break;
+                }
+
+            }
+
             return currentCodition;
         }
     }

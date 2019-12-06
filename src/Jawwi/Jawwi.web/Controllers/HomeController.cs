@@ -29,7 +29,7 @@ namespace Jawwi.web.Controllers
             //var weatherApi = new Weather.Api(_accessor);
             //return await weatherApi.GetCountries("MEA");
 
-            var model =  await _api.GetCurrentLocationDetails();
+            var model = await _api.GetCurrentLocationDetails();
             return View(model);
         }
 
@@ -45,24 +45,33 @@ namespace Jawwi.web.Controllers
             {
                 locations = JsonConvert.DeserializeObject<List<LocationViewModel>>(Request.Cookies["locations"]);
             }
-            var model = new List<LocationsViewModel>();
-            foreach (var location in locations)
+            if (locations.Count > 0)
             {
-                var result = (await _api.Search(location.City)).FirstOrDefault();
-                if (result != null)
+                var model = new List<LocationsViewModel>();
+                foreach (var location in locations)
                 {
-                    var weather = await _api.GetLocationDetails(result.Key);
-                    if (weather != null)
+                    var item = new LocationsViewModel()
                     {
-                        model.Add(new LocationsViewModel()
+                        Location = location
+                    };
+                    var result = (await _api.Search(location.City)).FirstOrDefault();
+                    if (result != null)
+                    {
+                        var weather = await _api.GetCurrentCondition(result.Key);
+                        if (weather != null)
                         {
-                            Location = location,
-                            Condition = weather
-                        });
+                            item.Condition = weather;
+                        }
                     }
+                    model.Add(item);
                 }
+                return View(model);
             }
-            return View(model);
+            else
+            {
+                return View(new List<LocationsViewModel>());
+            }
+
         }
 
         [HttpPost, ValidateAntiForgeryToken]

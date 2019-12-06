@@ -52,6 +52,10 @@
         public string EnglishName { get; set; }
     }
 
+    public class LocationResult 
+    {
+        public string Key { get; set; }
+    }
     public class Country
     {
         public string ID { get; set; }

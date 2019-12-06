@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Jawwi.web.Models.LocationViewModel>
+﻿@model IEnumerable<Jawwi.web.Models.LocationsViewModel>
 
 @{
     ViewData["Title"] = "Locations";
@@ -13,36 +13,67 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.City)
+                @Html.DisplayNameFor(model => model.Location.City)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.CountryName)
+                @Html.DisplayNameFor(model => model.Location.CountryName)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.CountryCode)
+                @Html.DisplayNameFor(model => model.Location.CountryCode)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.RegionCode)
+                @Html.DisplayNameFor(model => model.Location.RegionCode)
             </th>
             <th>
-                @Html
+                @Html.DisplayNameFor(model => model.Condition.WeatherText)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Condition.HasPrecipitation)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Condition.IsDayTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Condition.Temperature)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Condition.WeatherIcon)
             </th>
         </tr>
     </thead>
     <tbody>
         @foreach (var item in Model)
         {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.CountryName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.CountryCode)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.RegionCode)
-                </td>
-            </tr>
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Location.City)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Location.CountryName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Location.CountryCode)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Location.RegionCode)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Condition.WeatherText)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Condition.HasPrecipitation)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Condition.IsDayTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Condition.Temperature)
+            </td>
+            <td>
+                <img src="@Url.Content($"~/wwwroot/images/icons/{item.Condition.WeatherIcon}-s.png")" style="width:50px;" />
+                
+            </td>
+        </tr>
         }
     </tbody>
 </table>
