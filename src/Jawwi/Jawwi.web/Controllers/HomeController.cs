@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Jawwi.web.Models;
+using Microsoft.AspNetCore.Http;
+using Newtonsoft.Json;
 
 namespace Jawwi.web.Controllers
 {
@@ -21,6 +23,38 @@ namespace Jawwi.web.Controllers
         public IActionResult Index()
         {
             return View();
+        }
+
+        public IActionResult AddLocation()
+        {
+            return View(new LocationViewModel());
+        }
+
+        public IActionResult Locations()
+        {
+            var model = new List<LocationViewModel>();
+            if (Request.Cookies.ContainsKey("locations"))
+            {
+                model = JsonConvert.DeserializeObject<List<LocationViewModel>>(Request.Cookies["locations"]);
+            } 
+            return View(model);
+        }
+
+        [HttpPost, ValidateAntiForgeryToken]
+        public IActionResult AddLocation(LocationViewModel model)
+        {
+            var options = new CookieOptions();
+            options.Expires = DateTime.Now.AddMonths(1);
+
+            var locations = new List<LocationViewModel>();
+            if (Request.Cookies.ContainsKey("locations"))
+            {
+                locations = JsonConvert.DeserializeObject<List<LocationViewModel>>(Request.Cookies["locations"]);
+            }
+            locations.Add(model);
+            Response.Cookies.Append("locations", JsonConvert.SerializeObject(locations), options);
+            ViewBag.Message = "added";
+            return RedirectToAction("locations");
         }
 
         public IActionResult Privacy()

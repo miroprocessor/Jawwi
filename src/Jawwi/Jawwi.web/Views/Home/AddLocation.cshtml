@@ -1,0 +1,54 @@
+﻿@model Jawwi.web.Models.LocationViewModel
+
+@{
+    ViewData["Title"] = "AddLocation";
+}
+
+<h1>AddLocation</h1>
+
+<h4>Location</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="AddLocation">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="RegionCode" class="control-label"></label>
+                <select asp-for="RegionCode" class="form-control" onchange="loadCountries()">
+                    <option value="AFR">Africa</option>
+                    <option value="ANT">Antarctica</option>
+                    <option value="ARC">Arctic</option>
+                    <option value="ASI">Asia</option>
+                    <option value="CAC">Central America</option>
+                    <option value="EUR">Europe</option>
+                    <option value="MEA">Middle East</option>
+                    <option value="NAM">North America</option>
+                    <option value="OCN">Oceania</option>
+                    <option value="SAM">South America</option>
+                </select>
+                <span asp-validation-for="RegionCode" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CountryCode" class="control-label"></label>
+                <input asp-for="CountryCode" class="form-control" />
+                <span asp-validation-for="CountryCode" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CountryName" class="control-label"></label>
+                <input asp-for="CountryName" class="form-control" />
+                <span asp-validation-for="CountryName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
