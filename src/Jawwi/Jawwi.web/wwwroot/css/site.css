@@ -89,7 +89,7 @@ body {
         background-repeat: repeat-x;
         color: white;
         padding: 20px;
-        /*text-shadow: 1px 1px #0366d6;*/
+        /*text-shadow: 1px 1px #fff;*/
     }
 
         .weather .current .info {
@@ -140,3 +140,44 @@ body {
             .weather .future .day p {
                 font-size: 28px;
             }
+
+        .weather .future .hour {
+            flex-grow: 1;
+            text-align: center;
+            cursor: pointer;
+            padding: 5px 10px;
+        }
+
+            .weather .future .hour:hover {
+                color: #fff;
+                background-color: #F68D2E;
+            }
+
+            .weather .future .hour h3 {
+                text-transform: uppercase;
+            }
+
+            .weather .future .hour p {
+                font-size: 28px;
+            }
+
+.templowhigh {
+    font-size: x-small;
+}
+
+.location {
+    font-size: large;
+}
+
+.slider {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.slide {
+    flex-shrink: 0;
+    height: 100%;
+}
