@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="IDataContext.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="microsoft.entityframeworkcore" Version="3.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Jawwi.Models\Jawwi.Models.csproj" />
+  </ItemGroup>
+
+</Project>
