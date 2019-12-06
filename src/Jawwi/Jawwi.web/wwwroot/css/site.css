@@ -130,7 +130,7 @@ body {
 
             .weather .future .day:hover {
                 color: #fff;
-                background-color: #F68D2E;
+                background-color: #4e4fba;
             }
 
             .weather .future .day h3 {
@@ -150,7 +150,7 @@ body {
 
             .weather .future .hour:hover {
                 color: #fff;
-                background-color: #F68D2E;
+                background-color: #4e4fba;
             }
 
             .weather .future .hour h3 {

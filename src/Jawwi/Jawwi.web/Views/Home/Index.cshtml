@@ -1,4 +1,4 @@
-﻿@model Jawwi.web.Weather.Location
+﻿@model Jawwi.web.ViewModel.IndexVM
 
 @{
     ViewData["Title"] = "Home Page";
@@ -6,27 +6,27 @@
 
 @{
     var currentDt = DateTime.Now;
-    var fontColor = (currentDt.Hour >= 0 && currentDt.Hour < 12 ? "White" : "#12cdea");
+    var fontColor = (Model.Location.IsDayTime ? "#999aff" : "#0203a1");
 }
 
 <div class="container">
     <div class="row">
         <div class="col-md-7 offset-md-3">
             <div class="weather">
-                <div class="current" style="background-image: url('../images/icons/@Model.WeatherIcon-s.png');background-repeat: no-repeat;background-size: 100%; color:@fontColor">
+                <div class="current" style="background-image: url('../images/icons/@Model.Location.WeatherIcon-s.png');background-repeat: no-repeat;background-size: 100%; color:@fontColor">
                     <div class="info">
                         <div class="location">
                             <button class="btn btn-primary"><i class="fa fa-plus"></i>Location</button>
                         </div>
-                        <div class="temp">@Model.Temperature&deg;<small>C</small></div>
+                        <div class="temp">@Math.Round(Model.Location.Temperature)&deg;<small>C</small></div>
                         <div class="city">@currentDt.ToString("dddd MMM d, yyyy HH:mm")</div>
-                        <div class="city">@Model.Name, @Model.Area</div>
-                        <div class="wind"><small><small>WIND:</small></small>@Model.Wind</div>
-                        <div class="wind"><small><small>Humidity:</small></small>@Model.RelativeHumidity%</div>
+                        <div class="city">@Model.Location.Name, @Model.Location.Area</div>
+                        <div class="wind"><small><small>WIND:</small></small>@Model.Location.Wind</div>
+                        <div class="wind"><small><small>Humidity:</small></small>@Model.Location.RelativeHumidity%</div>
                         <div>&nbsp;</div>
                     </div>
                     <div class="icon">
-                        <img src="~/images/icons/@Model.WeatherIcon-s.png" alt="Alternate Text" />
+                        <img src="~/images/icons/@Model.Location.WeatherIcon-s.png" alt="Alternate Text" />
                     </div>
                 </div>
                 <h4 class="card-header">Hourly Forecast</h4>
@@ -43,15 +43,24 @@
                 </div>
                 <h4 class="card-header">Daily Forecast</h4>
                 <div class="future slider">
-                    @for (int i = 1; i <= 7; i++)
+                    @foreach (var daily in @Model.Dailyforecast)
                     {
                         <div class="day slide">
-                            <h3>@(currentDt.AddDays(i).ToString("ddd"))</h3>
-                            <div class="temp">22&deg; <small>C</small></div>
-                            <div class="templowhigh">9&deg;<small>C</small>/18&deg;<small>C</small></div>
-                            <p><img src="~/images/rainy-icons.svg" alt="Alternate Text" /></p>
+                            <h3>@(daily.Date.ToString("ddd"))</h3>
+                            <div class="temp">@Math.Round(((daily.Temperature.Minimum.Value + daily.Temperature.Maximum.Value) / 2)) &deg;<small>@daily.Temperature.Minimum.Unit</small></div>
+                            <div class="templowhigh">@Math.Round(daily.Temperature.Minimum.Value)&deg;<small>@daily.Temperature.Minimum.Unit</small>/@Math.Round(daily.Temperature.Maximum.Value)&deg;<small>@daily.Temperature.Maximum.Unit</small></div>
+                            <p><img src="~/images/icons/@(daily.Day.Icon.ToString("00"))-s.png" alt="Alternate Text" /></p>
                         </div>
                     }
+
+
+                    @*@for (int i = 1; i <= 7; i++)
+                        {
+                            <h3>@(currentDt.AddDays(i).ToString("ddd"))</h3>
+                            <div class="temp">@daily 22&deg; <small>C</small></div>
+                            <div class="templowhigh">9&deg;<small>C</small>/18&deg;<small>C</small></div>
+                            <p><img src="~/images/rainy-icons.svg" alt="Alternate Text" /></p>
+                        }*@
                 </div>
 
             </div>

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
+using Jawwi.Models;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 
@@ -61,24 +62,10 @@ namespace Jawwi.web.Weather
 
             client.BaseAddress = new Uri(BaseUrl);
 
-            var result = await client.GetAsync($"forecasts/v1/daily/5day/{locationCode}?apikey={apikey}");
+            var result = await client.GetAsync($"forecasts/v1/daily/5day/{locationCode}?apikey={apikey}&metric=true");
 
-            var json = JsonConvert.DeserializeObject<dynamic>(await result.Content.ReadAsStringAsync());
-
-            var days = new List<Dailyforecast>();
-            foreach (var dayna in json.Dailyforecast)
-            {
-                days.Add(new Dailyforecast()
-                {
-                    Date = dayna.Date,
-                    MinTemperature = dayna.Temperature.Minimum.Value,
-                    MaxTemperature = dayna.Temperature.Maximum.Value,
-                    Day = dayna.Day,
-                    Night = dayna.Night
-                });
-
-            }
-            return days;
+            var json = JsonConvert.DeserializeObject<ForcastDays>(await result.Content.ReadAsStringAsync());
+            return json.DailyForecasts.ToList();
         }
 
         /// <summary>
@@ -172,33 +159,31 @@ namespace Jawwi.web.Weather
 
             return currentCodition;
         }
+
+        public async Task<List<HourlyForecast>> GetHourlyForecast(string locationCode)
+        {
+            var client = new HttpClient();
+
+            client.BaseAddress = new Uri(BaseUrl);
+
+            var result = await client.GetAsync($"forecasts/v1/hourly/12hour/{locationCode}?apikey={apikey}");
+
+            var json = (dynamic)JsonConvert.DeserializeObject(await result.Content.ReadAsStringAsync());
+
+            var hours = new List<HourlyForecast>();
+            foreach (var hourly in json)
+            {
+                hours.Add(new HourlyForecast()
+                {
+                    Date = hourly.DateTime,
+                    MinTemperature = hourly.Temperature.Value,
+                    WeatherIcon = hourly.WeatherIcon
+                });
+
+            }
+            return hours;
+
+
+        }
     }
-
-
-    //[
-    //{
-    //    "LocalObservationDateTime": "2019-12-06T22:50:00+03:00",
-    //    "EpochTime": 1575661800,
-    //    "WeatherText": "Rain",
-    //    "WeatherIcon": 18,
-    //    "HasPrecipitation": true,
-    //    "PrecipitationType": "Rain",
-    //    "IsDayTime": false,
-    //    "Temperature": {
-    //        "Metric": {
-    //            "Value": 22.2,
-    //            "Unit": "C",
-    //            "UnitType": 17
-    //        },
-    //        "Imperial": {
-    //            "Value": 72,
-    //            "Unit": "F",
-    //            "UnitType": 18
-    //        }
-    //    },
-    //    "MobileLink": "http://m.accuweather.com/en/kw/kuwait/222056/current-weather/222056?lang=en-us",
-    //    "Link": "http://www.accuweather.com/en/kw/kuwait/222056/current-weather/222056?lang=en-us"
-    //}
-    //]
-
 }
