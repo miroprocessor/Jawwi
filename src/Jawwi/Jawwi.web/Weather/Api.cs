@@ -19,7 +19,7 @@ namespace Jawwi.web.Weather
         }
 
         public readonly string BaseUrl = "http://dataservice.accuweather.com/";
-        public readonly string apikey = "Bl3XjUzA1w7VraOff37cEfixuOoRPQnZ";//"C4rQfwrxnBypH9NSFUMpdfyg9z28sFNV";
+        public readonly string apikey = "zHVXd9nsZ6oHFTSAQSpjslDg8JGh4mAa";
 
         public async Task<string> GetCountries(string regionCode)
         {
@@ -154,33 +154,33 @@ namespace Jawwi.web.Weather
             };
             return currentCodition;
         }
+
+        public async Task<string> GetHourlyForecast(string locationCode)
+        {
+            var client = new HttpClient();
+
+            client.BaseAddress = new Uri(BaseUrl);
+
+            var result = await client.GetAsync($"forecasts/v1/hourly/120hour/{locationCode}?apikey={apikey}");
+
+            var json = JsonConvert.DeserializeObject<dynamic>(await result.Content.ReadAsStringAsync());
+
+            var hours = new List<Dailyforecast>();
+            foreach (var dayna in json.Dailyforecast)
+            {
+                hours.Add(new Dailyforecast()
+                {
+                    Date = dayna.Date,
+                    MinTemperature = dayna.Temperature.Minimum.Value,
+                    MaxTemperature = dayna.Temperature.Maximum.Value,
+                    Day = dayna.Day,
+                    Night = dayna.Night
+                });
+
+            }
+            return hours;
+
+
+        }
     }
-
-
-    //[
-    //{
-    //    "LocalObservationDateTime": "2019-12-06T22:50:00+03:00",
-    //    "EpochTime": 1575661800,
-    //    "WeatherText": "Rain",
-    //    "WeatherIcon": 18,
-    //    "HasPrecipitation": true,
-    //    "PrecipitationType": "Rain",
-    //    "IsDayTime": false,
-    //    "Temperature": {
-    //        "Metric": {
-    //            "Value": 22.2,
-    //            "Unit": "C",
-    //            "UnitType": 17
-    //        },
-    //        "Imperial": {
-    //            "Value": 72,
-    //            "Unit": "F",
-    //            "UnitType": 18
-    //        }
-    //    },
-    //    "MobileLink": "http://m.accuweather.com/en/kw/kuwait/222056/current-weather/222056?lang=en-us",
-    //    "Link": "http://www.accuweather.com/en/kw/kuwait/222056/current-weather/222056?lang=en-us"
-    //}
-    //]
-
 }
