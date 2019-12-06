@@ -14,10 +14,12 @@ namespace Jawwi.web.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly Weather.Api _api;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, Weather.Api weatherApi)
         {
             _logger = logger;
+            _api = weatherApi;
         }
 
         public IActionResult Index()
@@ -30,13 +32,30 @@ namespace Jawwi.web.Controllers
             return View(new LocationViewModel());
         }
 
-        public IActionResult Locations()
+        public async Task<IActionResult> Locations()
         {
-            var model = new List<LocationViewModel>();
+            var locations = new List<LocationViewModel>();
             if (Request.Cookies.ContainsKey("locations"))
             {
-                model = JsonConvert.DeserializeObject<List<LocationViewModel>>(Request.Cookies["locations"]);
-            } 
+                locations = JsonConvert.DeserializeObject<List<LocationViewModel>>(Request.Cookies["locations"]);
+            }
+            var model = new List<LocationsViewModel>();
+            foreach (var location in locations)
+            {
+                var result = (await _api.Search(location.City)).FirstOrDefault();
+                if (result != null)
+                {
+                    var weather = await _api.Forcast5Days(result.Key);
+                    if (weather != null)
+                    {
+                        model.Add(new LocationsViewModel()
+                        {
+                            Location = location,
+                            Dailyforecasts = weather
+                        });
+                    }
+                }
+            }
             return View(model);
         }
 

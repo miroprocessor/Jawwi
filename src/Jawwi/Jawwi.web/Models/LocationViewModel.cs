@@ -12,25 +12,13 @@ namespace Jawwi.web.Models
         public string CountryCode { get; set; }
 
         public string RegionCode { get; set; }
+
+        public string City { get; set; }
     }
     public class LocationsViewModel
     {
-        public string CountryName { get; set; }
+        public LocationViewModel Location{ get; set; }
 
-        public string CountryCode { get; set; }
-
-        public string RegionCode { get; set; }
-
-        public string City { get; set; }
-
-        public decimal Temp { get; set; }
-
-        public decimal MinTemp { get; set; }
-
-        public decimal MaxTemp { get; set; }
-
-        public string State { get; set; }
-
-        public string Humidity { get; set; }
+        public List<Dailyforecast> Dailyforecasts { get; set; }
     }
 }

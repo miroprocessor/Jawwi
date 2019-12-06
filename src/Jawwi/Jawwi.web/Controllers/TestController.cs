@@ -8,7 +8,7 @@ namespace Jawwi.web.Controllers
         public async Task<string> Index()
         {
 
-            var weatherApi = new WeatherApi.WeatherApi();
+            var weatherApi = new Weather.Api();
             return await weatherApi.GetCountries("MEA");
         }
     }
