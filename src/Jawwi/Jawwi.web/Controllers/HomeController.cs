@@ -14,17 +14,23 @@ namespace Jawwi.web.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly IHttpContextAccessor _accessor;
         private readonly Weather.Api _api;
 
         public HomeController(ILogger<HomeController> logger, Weather.Api weatherApi)
         {
             _logger = logger;
+            _accessor = accessor;
             _api = weatherApi;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var weatherApi = new WeatherApi.WeatherApi(_accessor.HttpContext);
+            //return await weatherApi.GetCountries("MEA");
+
+            var model =  await weatherApi.GetCurrentLocationDetails();
+            return View(model);
         }
 
         public IActionResult AddLocation()

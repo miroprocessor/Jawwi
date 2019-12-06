@@ -118,13 +118,16 @@ namespace Jawwi.web.Weather
             };
 
 
-            var ccresult = await client.GetAsync($"currentconditions/v1/{location.Key}?apikey={apikey}&lang=en-us&details=false");
+            var ccresult = await client.GetAsync($"currentconditions/v1/{location.Key}?apikey={apikey}&lang=en-us&details=true");
             var ccstringResult = await ccresult.Content.ReadAsStringAsync();
             var ccjson = (dynamic)JsonConvert.DeserializeObject(ccstringResult);
 
             location.WeatherText = ccjson[0].WeatherText;
             location.IsDayTime = ccjson[0].IsDayTime;
             location.Temperature = ccjson[0].Temperature.Metric.Value;
+            location.RelativeHumidity = ccjson[0].RelativeHumidity;
+            location.WeatherIcon = ccjson[0].WeatherIcon;
+            location.Wind = ccjson[0].Wind.Speed.Metric.Value + " " + ccjson[0].Wind.Speed.Metric.Unit;
 
             return location;
         }
