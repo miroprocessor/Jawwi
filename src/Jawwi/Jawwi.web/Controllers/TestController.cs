@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-using Jawwi.web.WeatherApi;
+using Jawwi.web.Weather;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -7,20 +7,18 @@ namespace Jawwi.web.Controllers
 {
     public class TestController : Controller
     {
-        private readonly IHttpContextAccessor _accessor;
+        private readonly Api _api;
 
-        public TestController(IHttpContextAccessor accessor)
+        public TestController(Api api)
         {
-            _accessor = accessor;
+            _api = api;
         }
 
         public async Task<Location> Index()
         {
 
-            var weatherApi = new WeatherApi.WeatherApi(_accessor.HttpContext);
-            //return await weatherApi.GetCountries("MEA");
             
-            return await weatherApi.GetCurrentLocationDetails();
+            return await _api.GetCurrentLocationDetails();
         }
     }
 }

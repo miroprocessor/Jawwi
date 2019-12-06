@@ -13,6 +13,9 @@
     <thead>
         <tr>
             <th>
+                @Html.DisplayNameFor(model => model.City)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.CountryName)
             </th>
             <th>
@@ -21,21 +24,25 @@
             <th>
                 @Html.DisplayNameFor(model => model.RegionCode)
             </th>
+            <th>
+                @Html
+            </th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.CountryName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CountryCode)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.RegionCode)
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CountryName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CountryCode)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.RegionCode)
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

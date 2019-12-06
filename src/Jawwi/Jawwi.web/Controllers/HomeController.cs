@@ -15,19 +15,21 @@ namespace Jawwi.web.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly IHttpContextAccessor _accessor;
+        private readonly Weather.Api _api;
 
-        public HomeController(ILogger<HomeController> logger, IHttpContextAccessor accessor)
+        public HomeController(ILogger<HomeController> logger, Weather.Api weatherApi, IHttpContextAccessor accessor)
         {
             _logger = logger;
             _accessor = accessor;
+            _api = weatherApi;
         }
 
         public async Task<IActionResult> Index()
         {
-            var weatherApi = new WeatherApi.WeatherApi(_accessor.HttpContext);
+            //var weatherApi = new Weather.Api(_accessor);
             //return await weatherApi.GetCountries("MEA");
 
-            var model =  await weatherApi.GetCurrentLocationDetails();
+            var model =  await _api.GetCurrentLocationDetails();
             return View(model);
         }
 
@@ -36,13 +38,30 @@ namespace Jawwi.web.Controllers
             return View(new LocationViewModel());
         }
 
-        public IActionResult Locations()
+        public async Task<IActionResult> Locations()
         {
-            var model = new List<LocationViewModel>();
+            var locations = new List<LocationViewModel>();
             if (Request.Cookies.ContainsKey("locations"))
             {
-                model = JsonConvert.DeserializeObject<List<LocationViewModel>>(Request.Cookies["locations"]);
-            } 
+                locations = JsonConvert.DeserializeObject<List<LocationViewModel>>(Request.Cookies["locations"]);
+            }
+            var model = new List<LocationsViewModel>();
+            foreach (var location in locations)
+            {
+                var result = (await _api.Search(location.City)).FirstOrDefault();
+                if (result != null)
+                {
+                    var weather = await _api.GetLocationDetails(result.Key);
+                    if (weather != null)
+                    {
+                        model.Add(new LocationsViewModel()
+                        {
+                            Location = location,
+                            Condition = weather
+                        });
+                    }
+                }
+            }
             return View(model);
         }
 
