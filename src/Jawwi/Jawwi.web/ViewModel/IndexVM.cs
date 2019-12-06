@@ -1,4 +1,5 @@
-﻿using Jawwi.web.Weather;
+﻿using Jawwi.Models;
+using Jawwi.web.Weather;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +9,7 @@ namespace Jawwi.web.ViewModel
 {
     public class IndexVM
     {
-        public Location Location { get; set; }
+        public Weather.Location Location { get; set; }
         public List<Dailyforecast> Dailyforecast { get; set; }
     }
 }

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
+using Jawwi.Models;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 
@@ -61,24 +62,10 @@ namespace Jawwi.web.Weather
 
             client.BaseAddress = new Uri(BaseUrl);
 
-            var result = await client.GetAsync($"forecasts/v1/daily/5day/{locationCode}?apikey={apikey}");
+            var result = await client.GetAsync($"forecasts/v1/daily/5day/{locationCode}?apikey={apikey}&metric=true");
 
-            var json = (dynamic)JsonConvert.DeserializeObject(await result.Content.ReadAsStringAsync());
-
-            var days = new List<Dailyforecast>();
-            foreach (var dayna in json.DailyForecasts)
-            {
-                days.Add(new Dailyforecast()
-                {
-                    Date = dayna.Date,
-                    MinTemperature = dayna.Temperature.Minimum.Value,
-                    MaxTemperature = dayna.Temperature.Maximum.Value,
-                    Day = dayna.Day,
-                    Night = dayna.Night
-                });
-
-            }
-            return days;
+            var json = JsonConvert.DeserializeObject<ForcastDays>(await result.Content.ReadAsStringAsync());
+            return json.DailyForecasts.ToList();
         }
 
         /// <summary>
