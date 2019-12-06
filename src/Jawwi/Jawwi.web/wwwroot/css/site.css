@@ -89,7 +89,7 @@ body {
         background-repeat: repeat-x;
         color: white;
         padding: 20px;
-        text-shadow: 1px 1px #0366d6;
+        /*text-shadow: 1px 1px #0366d6;*/
     }
 
         .weather .current .info {
