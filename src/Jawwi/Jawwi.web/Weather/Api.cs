@@ -19,7 +19,7 @@ namespace Jawwi.web.Weather
         }
 
         public readonly string BaseUrl = "http://dataservice.accuweather.com/";
-        public readonly string apikey = "zHVXd9nsZ6oHFTSAQSpjslDg8JGh4mAa";
+        public readonly string apikey = "n4oKALuAxkJWr5JhXtATHGmu5GIQ1L5A";
 
         public async Task<string> GetCountries(string regionCode)
         {
@@ -155,32 +155,30 @@ namespace Jawwi.web.Weather
             return currentCodition;
         }
 
-        //public async Task<List<HourlyForecast>> GetHourlyForecast(string locationCode)
-        //{
-        //    var client = new HttpClient();
+        public async Task<List<HourlyForecast>> GetHourlyForecast(string locationCode)
+        {
+            var client = new HttpClient();
 
-        //    client.BaseAddress = new Uri(BaseUrl);
+            client.BaseAddress = new Uri(BaseUrl);
 
-        //    var result = await client.GetAsync($"forecasts/v1/hourly/120hour/{locationCode}?apikey={apikey}");
+            var result = await client.GetAsync($"forecasts/v1/hourly/12hour/{locationCode}?apikey={apikey}");
 
-        //    var json = JsonConvert.DeserializeObject<dynamic>(await result.Content.ReadAsStringAsync());
+            var json = (dynamic)JsonConvert.DeserializeObject(await result.Content.ReadAsStringAsync());
 
-        //    var hours = new List<HourlyForecast>();
-        //    foreach (var hourly in json)
-        //    {
-        //        hours.Add(new HourlyForecast()
-        //        {
-        //            Date = hourly.DateTime,
-        //            MinTemperature = hourly.Temperature.Value,
-        //            MaxTemperature = WeatherIcon,
-        //            Day = hourly.Day,
-        //            Night = hourly.Night
-        //        });
-        
-        //    }
-        //    return hours;
+            var hours = new List<HourlyForecast>();
+            foreach (var hourly in json)
+            {
+                hours.Add(new HourlyForecast()
+                {
+                    Date = hourly.DateTime,
+                    MinTemperature = hourly.Temperature.Value,
+                    WeatherIcon = hourly.WeatherIcon
+                });
+
+            }
+            return hours;
 
 
-        //}
+        }
     }
 }

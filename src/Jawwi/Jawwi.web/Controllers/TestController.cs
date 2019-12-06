@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Jawwi.web.Weather;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -14,11 +15,13 @@ namespace Jawwi.web.Controllers
             _api = api;
         }
 
-        public async Task<Location> Index()
+        public async Task<List<HourlyForecast>> Index()
         {
+            var location = await _api.GetCurrentLocationDetails();
 
-            
-            return await _api.GetCurrentLocationDetails();
+            var hourly = await _api.GetHourlyForecast(location.Key);
+
+            return hourly;
         }
     }
 }

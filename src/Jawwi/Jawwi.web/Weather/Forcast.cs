@@ -5,9 +5,7 @@ public class HourlyForecast
 {
     public DateTime Date { get; set; }
     public decimal MinTemperature { get; set; }
-    public decimal MaxTemperature { get; set; }
-    public Day Day { get; set; }
-    public Night Night { get; set; }
+    public int WeatherIcon{ get; set; }
 }
 
 public class Dailyforecast
