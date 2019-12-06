@@ -166,7 +166,7 @@ namespace Jawwi.web.Weather
 
             client.BaseAddress = new Uri(BaseUrl);
 
-            var result = await client.GetAsync($"forecasts/v1/hourly/12hour/{locationCode}?apikey={apikey}");
+            var result = await client.GetAsync($"forecasts/v1/hourly/12hour/{locationCode}?apikey={apikey}&metric=true");
 
             var json = (dynamic)JsonConvert.DeserializeObject(await result.Content.ReadAsStringAsync());
             int i = 0;
