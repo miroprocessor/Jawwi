@@ -35,7 +35,7 @@
                     {
                         <div class="hour slide">
                             <h3>@(currentDt.AddHours(hourly.Index + 2).ToString("HH:00"))</h3>
-                            <div class="temp">@hourly.Temperature &deg;<small>C</small></div>
+                            <div class="temp">@hourly.Temperature.ToString("0") &deg;<small>C</small></div>
                             <p><img src="~/images/icons/@hourly.WeatherIcon.ToString("00")-s.png" alt="Alternate Text" /></p>
                         </div>
                     }
