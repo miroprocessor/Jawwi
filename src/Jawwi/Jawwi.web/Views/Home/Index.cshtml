@@ -1,4 +1,6 @@
-﻿@{
+﻿@model Jawwi.web.WeatherApi.Location
+
+@{
     ViewData["Title"] = "Home Page";
 }
 
@@ -16,15 +18,15 @@
                         <div class="location">
                             <button class="btn btn-primary"><i class="fa fa-plus"></i>Location</button>
                         </div>
-                        <div class="temp">22&deg;<small>C</small></div>
+                        <div class="temp">@Model.Temperature&deg;<small>C</small></div>
                         <div class="city">@currentDt.ToString("dddd MMM d, yyyy HH:mm")</div>
-                        <div class="city">Kuwait</div>
-                        <div class="wind"><small><small>WIND:</small></small>12 km/h</div>
-                        <div class="wind"><small><small>Humidity:</small></small>10%</div>
+                        <div class="city">@Model.Name, @Model.Area</div>
+                        <div class="wind"><small><small>WIND:</small></small>@Model.Wind</div>
+                        <div class="wind"><small><small>Humidity:</small></small>@Model.RelativeHumidity%</div>
                         <div>&nbsp;</div>
                     </div>
                     <div class="icon">
-                        <img src="~/images/thunder-icons.svg" alt="Alternate Text" />
+                        <img src="~/images/icons/@Model.WeatherIcon-s.png" alt="Alternate Text" />
                     </div>
                 </div>
                 <h4 class="card-header">Hourly Forecast</h4>
