@@ -22,6 +22,7 @@
     public class CurrentCodition 
     {
         public string WeatherText { get; set; }
+        public string PrecipitationType { get; set; }
 
         public int WeatherIcon { get; set;}
 
@@ -60,6 +61,8 @@
     {
         public string Code { get; set; }
         public string Name { get; set; }
+        public string City { get; set; }
+        public string Key { get; set; }
     }
 
     public class Administrativearea

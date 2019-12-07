@@ -8,9 +8,8 @@
 
 <h1>Locations</h1>
 
-<input type="text" name="name" placeholder="Type a city name" class="form-control" onkeypress="loadCountries($(this).val())" />
+<input type="text" name="name" placeholder="Type a city name" class="form-control" onkeyup="loadCountries($(this).val())" />
 <br />
-<div id="dvcontries"></div>
 @foreach (var item in Model)
 {
     @*Result should dispaly hear*@
@@ -18,49 +17,79 @@
         <div class="row no-gutters">
             <div class="col-md-6">
                 <div class="card-body">
-                    <h5 class="card-title">@item.Location.CountryName</h5>
+                    <h5 class="card-title">@item.Location.City, @item.Location.Name</h5>
                     <p class="card-text">@currentDt.ToString("dddd MMM d, yyyy HH:mm")</p>
                 </div>
             </div>
             <div class="col-md-4 text-right">
                 <div class="card-body">
-                    <p><img src="~/images/rainy-icons.svg" alt="Alternate Text" /></p>
+                    <p><img src="~/images/icons/@(item.Condition?.WeatherIcon)-s.png" alt="Alternate Text" /></p>
                 </div>
             </div>
             <div class="col-md-2 text-left">
                 <div class="card-body">
-                    <p class="card-text">22&deg;C</p>
-                    <p class="card-text">9&deg;C/18&deg;C</p>
-                    <p class="card-text">Rain Expectation: 20%</p>
+                    <p class="card-text">@item.Condition?.Temperature&deg;C</p>
+                    <p class="card-text">@item.Condition?.WeatherText</p>
+                    @if (item.Condition!=null && item.Condition.HasPrecipitation)
+                    {
+                    <p class="card-text">Rain Expectation: @item.Condition.PrecipitationType</p>
+                    }
                 </div>
             </div>
         </div>
     </div>
 }
-
+<div id="dvcontries">
+</div>
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 
     <script>
         function loadCountries(query) {
 
-            if (query.length > 3) {
+            if (query.length > 4) {
                 $.ajax({
             url: '@Url.Content("~/Locations/Search?query=")' + query,
             type: 'GET',
             dataType: 'Json',
-            success: function (e) {
-                $('#CountryCode').html('');
-                for (var x = 0; x < e.length - 1;x++) {
-                    $('#CountryCode').append('<option value="' + e[x].code + '">' + e[x].name + '</option>');
+                    success: function (e) {
+                        console.log(e);
+                        $('#dvcontries').html('');
+                for (var x = 0; x < e.length - 1; x++) {
+                    $('#dvcontries').append(template
+                        .replace(/##Key##/g, e[x].key)
+                        .replace(/##City##/g, e[x].city)
+                        .replace(/##CountryName##/g, e[x].name)
+                        .replace(/##CountryCode##/g, e[x].code));
                         }
+                        $('#dvcontries').find('#btn_'+e[x].city+'_'+e[x].name+'_'+e[x].code,e[x].key).on('click', function () {
+                            addCountry(e[x].city,e[x].name,e[x].code,e[x].key);
+                        })
                     },
             error: function () {
                 alert('Error!!!.');
             }
         })
             }
-    }
+        }
+        function addCountry(city,name, code,key) {
+            //alert(city + ' ' + ' ' + name + ' ' + code);
+            window.location.href = '@Url.Content("~/locations/add")'+'?city='+city+'&code='+code+'&name='+name+'&key='+key;
+        }
+        var template=` <div class="card mb-3" style="max-width: 100%;">
+            <div class="row no-gutters">
+                <div class="col-md-12">
+                    <div class="card-body">
+<div style='float:left'>
+                        <h5 class="card-title">##City##, ##CountryName##</h5>
+                        <p class="card-text">@currentDt.ToString("dddd MMM d, yyyy HH:mm")</p>
+</div>
+<button type='button' id="btn_##City##_##CountryCode##_##CountryName##_##Key##" onclick="addCountry('##City##','##CountryName##','##CountryCode##','##Key##')" class='btn btn-info'style='float:right'>Add</button>
+
+                    </div>
+                </div>
+            </div>
+        </div>`
     </script>
 }
 

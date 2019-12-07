@@ -20,7 +20,7 @@ namespace Jawwi.web.Weather
         }
 
         public readonly string BaseUrl = "http://dataservice.accuweather.com/";
-        public readonly string apikey = "ju8lA0Heax0Q1lAol0AoVo97x8Aw2Pcb";//"C4rQfwrxnBypH9NSFUMpdfyg9z28sFNV";
+        public readonly string apikey = "WSRSKFrzMf4AbD3dwKXodO3UHDeo4pma";//"C4rQfwrxnBypH9NSFUMpdfyg9z28sFNV";
 
         public async Task<IEnumerable<Country>> GetCountries(string query)
         {
@@ -39,7 +39,9 @@ namespace Jawwi.web.Weather
                     countries.Add(new Country()
                     {
                         Code = item.Country.ID,
-                        Name = item.Country.LocalizedName
+                        Name = item.Country.LocalizedName,
+                        City = item.LocalizedName,
+                        Key = item.Key
                     });
                 }
             }
@@ -162,7 +164,8 @@ namespace Jawwi.web.Weather
                         WeatherIcon = item.WeatherIcon,
                         HasPrecipitation = item.HasPrecipitation,
                         IsDayTime = item.IsDayTime,
-                        Temperature = item.Temperature.Metric.Value
+                        Temperature = item.Temperature.Metric.Value,
+                        PrecipitationType = item.PrecipitationType,
                     };
                     break;
                 }
